@@ -1,0 +1,48 @@
+House Price Prediction — commands to run (Windows PowerShell)
+
+=== First-time setup ===
+
+cd "C:\Users\Prashant Sachan\OneDrive\Desktop\projects\ai_learn\1000projects\01-house-prediction"
+
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+pip install -r requirements.txt
+copy .env.example .env
+
+python -m app.ml.house_price.train
+uvicorn app.main:app --reload
+
+Open in browser: http://127.0.0.1:8000/docs
+
+
+=== Run API (after setup) ===
+
+cd "C:\Users\Prashant Sachan\OneDrive\Desktop\projects\ai_learn\1000projects\01-house-prediction"
+.\.venv\Scripts\Activate.ps1
+uvicorn app.main:app --reload
+
+
+=== Retrain model (optional) ===
+
+python -m app.ml.house_price.train
+
+
+=== Login + predict (cookie auth) ===
+
+Demo user: demo@example.com / demo-pass-123
+
+Invoke-WebRequest http://127.0.0.1:8000/auth/login -Method Post `
+  -ContentType "application/json" `
+  -Body '{"email":"demo@example.com","password":"demo-pass-123"}' `
+  -SessionVariable session
+
+Invoke-RestMethod http://127.0.0.1:8000/predict -Method Post `
+  -ContentType "application/json" `
+  -WebSession $session `
+  -Body '{"MedInc":8.3252,"HouseAge":41,"AveRooms":6.984,"AveBedrms":1.024,"Population":322,"AveOccup":2.556,"Latitude":37.88,"Longitude":-122.23}'
+
+
+=== Run tests ===
+
+pytest -q

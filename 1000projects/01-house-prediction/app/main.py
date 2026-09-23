@@ -11,6 +11,7 @@ from app.db.database import SessionLocal
 from app.core.config import settings
 from app.db import models
 from app.db.database import Base, engine
+from app.db.schema import sync_missing_columns
 from app.ml.house_price.service import registry
 
 
@@ -25,6 +26,7 @@ def _ensure_sqlite_parent() -> None:
 async def lifespan(_: FastAPI):
     _ensure_sqlite_parent()
     Base.metadata.create_all(bind=engine)
+    sync_missing_columns(engine)
     db = SessionLocal()
     try:
         ensure_bootstrap_user(db)
