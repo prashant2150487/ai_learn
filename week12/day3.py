@@ -14,3 +14,29 @@ X_test = pad_sequences(X_test, maxlen= max_len, padding = 'post')
 
 print(f"Traning Data Shape : {X_train.shape}")
 print(f"Testing Data Shape : {X_test.shape}")
+# print(X_train)
+
+rnn_model = Sequential([
+    Embedding(input_dim=vocab_size,output_dim=128),
+    SimpleRNN(128, activation='tanh', return_sequences = False),
+    Dense(1, activation='sigmoid')
+])
+
+rnn_model.compile(optimizer = 'adam',loss ='binary_crossentropy', metrics = ['accuracy'])
+rnn_model.summary()
+rnn_history = rnn_model.fit(X_train, y_train, epochs= 5 , batch_size=32, validation_split = 0.2)
+rnn_loss, rnn_accuracy = rnn_model.evaluate(X_test, y_test)
+print(f" RNN test Loss: {rnn_loss:.4f}, Text accuracy: {rnn_accuracy:.4f}")
+
+
+lstm_model = Sequential([
+    Embedding(input_dim=vocab_size,output_dim=128),
+    LSTM(128, activation='tanh', return_sequences = False),
+    Dense(1, activation='sigmoid')
+])
+
+lstm_model.compile(optimizer = 'adam',loss ='binary_crossentropy', metrics = ['accuracy'])
+lstm_model.summary()
+lstm_history = lstm_model.fit(X_train, y_train, epochs= 5 , batch_size=32, validation_split = 0.2)
+lstm_loss, lstm_accuracy = lstm_history.evaluate(X_test, y_test)
+print(f" LSRM test Loss: {lstm_loss:.4f}, Text accuracy: {lstm_accuracy:.4f}")
