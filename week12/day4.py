@@ -40,3 +40,8 @@ gru_model.summary()
 gru_history = gru_model.fit(X_train, y_train, epochs= 5 , batch_size=32, validation_split = 0.2)
 gru_loss, gru_accuracy = gru_history.evaluate(X_test, y_test)
 print(f" LSRM test Loss: {gru_loss:.4f}, Text accuracy: {gru_accuracy:.4f}")
+
+
+
+
+
